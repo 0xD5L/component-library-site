@@ -158,6 +158,7 @@
     @apply border-border outline-ring/50;
     scrollbar-color: #293a56 transparent;
     scrollbar-width: thin;
+    cursor: url('/pointer.png'), auto;
   }
   body {
     @apply bg-background text-foreground;
