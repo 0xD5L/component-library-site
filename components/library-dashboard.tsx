@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { create } from "zustand";
 import {
   Search,
@@ -249,32 +250,42 @@ export function LibraryDashboard() {
             {visible.map((item, index) => (
               <article
                 key={item.slug}
-                className="group overflow-hidden rounded-xl border border-slate-800 bg-slate-900/45 transition hover:-translate-y-0.5 hover:border-slate-600"
+                className="group flex flex-col justify-between overflow-hidden rounded-xl border border-slate-800 bg-slate-900/45 transition hover:-translate-y-0.5 hover:border-slate-600"
               >
-                <div className="flex min-h-48 items-center justify-center border-b border-slate-800 bg-[#0d1219] p-7">
+                <Link
+                  href={`/components/${item.slug}`}
+                  className="flex min-h-48 items-center justify-center border-b border-slate-800 bg-[#0d1219] p-7 transition group-hover:bg-[#0f1520]"
+                >
                   <Preview
                     name={item.name}
                     accent={item.accent}
                     index={index}
                   />
-                </div>
-                <div className="p-5">
-                  <div className="mb-3 flex items-center justify-between">
-                    <span
-                      className={`rounded-full border px-2 py-1 font-mono text-[9px] uppercase tracking-wider ${accentClass[item.accent]}`}
+                </Link>
+                <div className="flex flex-1 flex-col justify-between p-5">
+                  <div>
+                    <div className="mb-3 flex items-center justify-between">
+                      <span
+                        className={`rounded-full border px-2 py-1 font-mono text-[9px] uppercase tracking-wider ${accentClass[item.accent]}`}
+                      >
+                        {item.status}
+                      </span>
+                      <span className="font-mono text-[10px] text-slate-600">
+                        {item.category}
+                      </span>
+                    </div>
+                    <Link
+                      href={`/components/${item.slug}`}
+                      className="block group-hover:text-cyan-300"
                     >
-                      {item.status}
-                    </span>
-                    <span className="font-mono text-[10px] text-slate-600">
-                      {item.category}
-                    </span>
+                      <h3 className="text-base font-semibold text-slate-100 transition group-hover:text-cyan-300">
+                        {item.name}
+                      </h3>
+                    </Link>
+                    <p className="mt-2 min-h-10 text-xs leading-5 text-slate-500">
+                      {item.description}
+                    </p>
                   </div>
-                  <h3 className="text-base font-semibold text-slate-100">
-                    {item.name}
-                  </h3>
-                  <p className="mt-2 min-h-10 text-xs leading-5 text-slate-500">
-                    {item.description}
-                  </p>
                   <div className="mt-5 flex items-center justify-between border-t border-slate-800 pt-4">
                     <button
                       onClick={() => copyCode(item.slug)}
@@ -283,9 +294,12 @@ export function LibraryDashboard() {
                       {copied ? <Check size={13} /> : <Copy size={13} />}{" "}
                       {copied ? "Copied" : "Copy snippet"}
                     </button>
-                    <button className="flex items-center gap-1 text-xs text-slate-300 hover:text-cyan-300">
-                      Explore <ArrowUpRight size={13} />
-                    </button>
+                    <Link
+                      href={`/components/${item.slug}`}
+                      className="flex items-center gap-1 text-xs text-slate-300 transition hover:text-cyan-300"
+                    >
+                      Explore & Code <ArrowUpRight size={13} />
+                    </Link>
                   </div>
                 </div>
               </article>
