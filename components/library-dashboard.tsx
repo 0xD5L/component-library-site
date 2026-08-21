@@ -81,10 +81,12 @@ export function LibraryDashboard() {
         <div className="mx-auto flex h-16 max-w-375 items-center gap-6 px-5 lg:px-8">
           <button
             onClick={() => setMobileNav(!mobileNav)}
-            className="rounded-md p-2 text-slate-400 hover:bg-slate-800 lg:hidden"
+            className="relative flex size-9 items-center justify-center rounded-lg border border-slate-800 bg-slate-900/80 text-slate-400 transition-all hover:border-slate-700 hover:text-slate-100 active:scale-95 lg:hidden"
             aria-label="Toggle navigation"
           >
-            {mobileNav ? <X size={18} /> : <Menu size={18} />}
+            <div className={`transition-all duration-200 transform ${mobileNav ? "rotate-90 scale-105 text-cyan-300" : "rotate-0 scale-100 text-slate-400"}`}>
+              {mobileNav ? <X size={18} /> : <Menu size={18} />}
+            </div>
           </button>
           <a href="#top" className="flex items-center gap-3">
             <span className="flex items-center gap-2 text-lg font-semibold">
@@ -124,9 +126,24 @@ export function LibraryDashboard() {
         </div>
       </header>
 
+      {/* Mobile nav backdrop blur */}
+      {mobileNav && (
+        <div
+          className="fixed inset-0 top-16 z-20 bg-black/70 backdrop-blur-sm transition-opacity animate-in fade-in duration-200 lg:hidden"
+          onClick={() => setMobileNav(false)}
+        />
+      )}
+
       <div id="top" className="mx-auto flex max-w-375">
         <aside
-          className={`${mobileNav ? "absolute inset-x-0 top-16 z-10 block bg-[#080b10]" : "hidden"} w-64 shrink-0 border-r border-slate-800/80 lg:sticky lg:top-16 lg:block lg:h-[calc(100vh-4rem)] lg:overflow-y-auto`}
+          className={`
+            ${
+              mobileNav
+                ? "fixed inset-x-0 top-16 z-30 block max-h-[calc(100vh-4.5rem)] overflow-y-auto border-b border-slate-800 bg-[#080b10]/95 shadow-2xl shadow-cyan-950/20 backdrop-blur-2xl animate-in fade-in slide-in-from-top-3 duration-200"
+                : "hidden"
+            }
+            w-full lg:w-64 shrink-0 lg:sticky lg:top-16 lg:z-10 lg:block lg:max-h-none lg:h-[calc(100vh-4rem)] lg:overflow-y-auto lg:border-r lg:border-b-0 lg:border-slate-800/80 lg:bg-transparent lg:shadow-none
+          `}
         >
           <div className="flex h-full flex-col px-4 py-7">
             <div className="mb-7 px-3">
@@ -200,11 +217,11 @@ export function LibraryDashboard() {
               yours.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
-              <a href="#components-grid">
+              <Link href="/components">
                 <Button className="bg-linear-to-br from-[#3eddf1] to-[#0455a7] px-4 py-5 rounded-2xl text-sm text-[#071116] hover:bg-cyan-600">
                   Browse components <ChevronRight data-icon="inline-end" />
                 </Button>
-              </a>
+              </Link>
               <Link
                 href="/docs"
                 className="flex items-center gap-2 rounded-md px-2 py-2 text-sm text-slate-400 transition hover:text-cyan-300"
