@@ -245,20 +245,22 @@ export function LibraryDashboard() {
                 <p className="text-xs leading-relaxed text-slate-500">
                   Built in public. Copy, remix, and make it yours.
                 </p>
-                <Link
-                  href="/docs"
-                  className="mt-4 flex items-center gap-1 text-xs text-slate-300 hover:text-cyan-300 transition"
-                >
-                  View philosophy & docs <ArrowUpRight size={12} />
-                </Link>
+                <div className="mt-4 flex flex-col gap-2">
+                  <Link
+                    href="/docs"
+                    className="flex items-center gap-1 text-xs text-slate-300 hover:text-cyan-300 transition"
+                  >
+                    View philosophy & docs <ArrowUpRight size={12} />
+                  </Link>
+                  <button
+                    onClick={() => window.open("https://github.com/0xD5L/component-library-site", "_blank")}
+                    className="flex items-center gap-1 text-xs text-slate-400 hover:text-cyan-300 transition"
+                  >
+                    View on GitHub <ArrowUpRight size={12} />
+                  </button>
+                </div>
               </div>
-              <p className="text-xs leading-relaxed text-slate-500">
-                Built in public. Copy, remix, and make it yours.
-              </p>
-              <button onClick={() => window.open("https://github.com/0xD5L/component-library-site", "_blank")} className="mt-4 flex items-center gap-1 text-xs text-slate-300 hover:text-cyan-300">
-                View on GitHub <ArrowUpRight size={12} />
-              </button>
-            </div>
+            )}
           </div>
         </aside>
 
