@@ -178,7 +178,7 @@ export function LibraryDashboard() {
               <p className="text-xs leading-relaxed text-slate-500">
                 Built in public. Copy, remix, and make it yours.
               </p>
-              <button className="mt-4 flex items-center gap-1 text-xs text-slate-300 hover:text-cyan-300">
+              <button onClick={() => window.open("https://github.com/0xD5L/component-library-site", "_blank")} className="mt-4 flex items-center gap-1 text-xs text-slate-300 hover:text-cyan-300">
                 View on GitHub <ArrowUpRight size={12} />
               </button>
             </div>
