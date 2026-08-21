@@ -17,6 +17,8 @@ import {
   Menu,
   X,
   ChevronRight,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -45,6 +47,7 @@ export function LibraryDashboard() {
   const [activeCategory, setActiveCategory] = useState("All components");
   const [query, setQuery] = useState("");
   const [mobileNav, setMobileNav] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [copied, setCopied] = useState(false);
   const { dark, toggle } = useThemeStore();
 
@@ -81,11 +84,14 @@ export function LibraryDashboard() {
         <div className="mx-auto flex h-16 max-w-375 items-center gap-6 px-5 lg:px-8">
           <button
             onClick={() => setMobileNav(!mobileNav)}
-            className="rounded-md p-2 text-slate-400 hover:bg-slate-800 lg:hidden"
+            className="relative flex size-9 items-center justify-center rounded-lg border border-slate-800 bg-slate-900/80 text-slate-400 transition-all hover:border-slate-700 hover:text-slate-100 active:scale-95 lg:hidden"
             aria-label="Toggle navigation"
           >
-            {mobileNav ? <X size={18} /> : <Menu size={18} />}
+            <div className={`transition-all duration-200 transform ${mobileNav ? "rotate-90 scale-105 text-cyan-300" : "rotate-0 scale-100 text-slate-400"}`}>
+              {mobileNav ? <X size={18} /> : <Menu size={18} />}
+            </div>
           </button>
+
           <a href="#top" className="flex items-center gap-3">
             <span className="flex items-center gap-2 text-lg font-semibold">
               <img src="/kinetix-logo.png" alt="Kinetix" className="size-6" />
@@ -124,17 +130,52 @@ export function LibraryDashboard() {
         </div>
       </header>
 
+      {/* Mobile nav backdrop blur */}
+      {mobileNav && (
+        <div
+          className="fixed inset-0 top-16 z-20 bg-black/70 backdrop-blur-sm transition-opacity animate-in fade-in duration-200 lg:hidden"
+          onClick={() => setMobileNav(false)}
+        />
+      )}
+
       <div id="top" className="mx-auto flex max-w-375">
         <aside
-          className={`${mobileNav ? "absolute inset-x-0 top-16 z-10 block bg-[#080b10]" : "hidden"} w-64 shrink-0 border-r border-slate-800/80 lg:sticky lg:top-16 lg:block lg:h-[calc(100vh-4rem)] lg:overflow-y-auto`}
+          className={`
+            ${
+              mobileNav
+                ? "fixed inset-x-0 top-16 z-30 block max-h-[calc(100vh-4.5rem)] overflow-y-auto border-b border-slate-800 bg-[#080b10]/95 shadow-2xl shadow-cyan-950/20 backdrop-blur-2xl animate-in fade-in slide-in-from-top-3 duration-200"
+                : "hidden"
+            }
+            w-full lg:sticky lg:top-16 lg:z-10 lg:block lg:max-h-none lg:h-[calc(100vh-4rem)] lg:overflow-y-auto lg:border-r lg:border-b-0 lg:border-slate-800/80 lg:bg-transparent lg:shadow-none transition-all duration-300 ease-in-out
+            ${sidebarCollapsed ? "lg:w-16 shrink-0" : "lg:w-64 shrink-0"}
+          `}
         >
-          <div className="flex h-full flex-col px-4 py-7">
-            <div className="mb-7 px-3">
-              <p className="font-mono text-[10px] uppercase tracking-[.2em] text-slate-600">
-                Collections
-              </p>
+          <div className={`flex h-full flex-col py-7 transition-all duration-300 ${sidebarCollapsed ? "px-2 items-center" : "px-4"}`}>
+            <div className={`mb-6 flex items-center transition-all ${sidebarCollapsed ? "justify-center px-0" : "justify-between px-3"}`}>
+              {!sidebarCollapsed ? (
+                <>
+                  <p className="font-mono text-[10px] uppercase tracking-[.2em] text-slate-600">
+                    Collections
+                  </p>
+                  <button
+                    onClick={() => setSidebarCollapsed(true)}
+                    className="hidden text-slate-500 hover:text-slate-200 lg:block transition"
+                    title="Collapse sidebar"
+                  >
+                    <PanelLeftClose size={14} />
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => setSidebarCollapsed(false)}
+                  className="hidden text-slate-500 hover:text-cyan-300 lg:block transition"
+                  title="Expand sidebar"
+                >
+                  <PanelLeftOpen size={16} />
+                </button>
+              )}
             </div>
-            <nav className="flex flex-col gap-1">
+            <nav className="flex flex-col gap-1 w-full">
               {collections.map((collection) => (
                 <button
                   key={collection.id}
@@ -143,37 +184,73 @@ export function LibraryDashboard() {
                     setActiveCategory("All components");
                     setMobileNav(false);
                   }}
-                  className={`group flex items-center gap-3 rounded-lg px-3 py-3 text-left text-sm transition ${activeCollection === collection.id ? "bg-slate-800/80 text-slate-100" : "text-slate-500 hover:bg-slate-900 hover:text-slate-200"}`}
+                  title={sidebarCollapsed ? `${collection.label} (${collection.count})` : undefined}
+                  className={`group flex items-center rounded-lg text-left text-sm transition-all ${
+                    sidebarCollapsed
+                      ? "justify-center p-3"
+                      : "gap-3 px-3 py-3"
+                  } ${
+                    activeCollection === collection.id
+                      ? "bg-slate-800/80 text-slate-100"
+                      : "text-slate-500 hover:bg-slate-900 hover:text-slate-200"
+                  }`}
                 >
                   <span
-                    className={`size-2 rounded-full ${collection.accent === "cyan" ? "bg-cyan-300" : collection.accent === "purple" ? "bg-fuchsia-300" : "bg-emerald-300"}`}
+                    className={`size-2.5 rounded-full shrink-0 transition-transform group-hover:scale-125 ${
+                      collection.accent === "cyan"
+                        ? "bg-cyan-300 shadow-[0_0_8px_rgba(103,232,249,0.5)]"
+                        : collection.accent === "purple"
+                        ? "bg-fuchsia-300 shadow-[0_0_8px_rgba(240,171,252,0.5)]"
+                        : "bg-emerald-300 shadow-[0_0_8px_rgba(110,231,183,0.5)]"
+                    }`}
                   />
-                  <span className="flex-1">{collection.label}</span>
-                  <span className="font-mono text-[10px] text-slate-600">
-                    {collection.count}
-                  </span>
+                  {!sidebarCollapsed && (
+                    <>
+                      <span className="flex-1 truncate">{collection.label}</span>
+                      <span className="font-mono text-[10px] text-slate-600">
+                        {collection.count}
+                      </span>
+                    </>
+                  )}
                 </button>
               ))}
             </nav>
-            <div className="mt-10 border-t border-slate-800/70 pt-7">
-              <p className="mb-4 px-3 font-mono text-[10px] uppercase tracking-[.2em] text-slate-600">
-                Browse by type
-              </p>
-              <div className="flex flex-col gap-1">
-                {["All components", ...categories].map((category) => (
-                  <button
-                    key={category}
-                    onClick={() => setActiveCategory(category)}
-                    className={`rounded-md px-3 py-1.5 text-left text-xs ${activeCategory === category ? "text-cyan-300" : "text-slate-500 hover:text-slate-200"}`}
-                  >
-                    {category}
-                  </button>
-                ))}
+            {!sidebarCollapsed && (
+              <div className="mt-10 border-t border-slate-800/70 pt-7 animate-in fade-in duration-200">
+                <p className="mb-4 px-3 font-mono text-[10px] uppercase tracking-[.2em] text-slate-600">
+                  Browse by type
+                </p>
+                <div className="flex flex-col gap-1">
+                  {["All components", ...categories].map((category) => (
+                    <button
+                      key={category}
+                      onClick={() => setActiveCategory(category)}
+                      className={`rounded-md px-3 py-1.5 text-left text-xs transition ${
+                        activeCategory === category
+                          ? "text-cyan-300 font-medium"
+                          : "text-slate-500 hover:text-slate-200"
+                      }`}
+                    >
+                      {category}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-            <div className="mt-auto rounded-xl border border-slate-800 bg-slate-900/50 p-4">
-              <div className="mb-3 flex items-center gap-2 text-xs font-semibold">
-                <Sparkles size={14} className="text-cyan-300" /> Open source
+            )}
+            {!sidebarCollapsed && (
+              <div className="mt-auto rounded-xl border border-slate-800 bg-slate-900/50 p-4 animate-in fade-in duration-200">
+                <div className="mb-3 flex items-center gap-2 text-xs font-semibold">
+                  <Sparkles size={14} className="text-cyan-300" /> Open source
+                </div>
+                <p className="text-xs leading-relaxed text-slate-500">
+                  Built in public. Copy, remix, and make it yours.
+                </p>
+                <Link
+                  href="/docs"
+                  className="mt-4 flex items-center gap-1 text-xs text-slate-300 hover:text-cyan-300 transition"
+                >
+                  View philosophy & docs <ArrowUpRight size={12} />
+                </Link>
               </div>
               <p className="text-xs leading-relaxed text-slate-500">
                 Built in public. Copy, remix, and make it yours.
@@ -200,11 +277,11 @@ export function LibraryDashboard() {
               yours.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
-              <a href="#components-grid">
+              <Link href="/components">
                 <Button className="bg-linear-to-br from-[#3eddf1] to-[#0455a7] px-4 py-5 rounded-2xl text-sm text-[#071116] hover:bg-cyan-600">
                   Browse components <ChevronRight data-icon="inline-end" />
                 </Button>
-              </a>
+              </Link>
               <Link
                 href="/docs"
                 className="flex items-center gap-2 rounded-md px-2 py-2 text-sm text-slate-400 transition hover:text-cyan-300"
