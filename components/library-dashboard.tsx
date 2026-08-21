@@ -199,7 +199,7 @@ export function LibraryDashboard() {
               yours.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
-              <Button className="bg-cyan-300 text-[#071116] hover:bg-cyan-200">
+              <Button className="bg-linear-to-br from-[#3eddf1] to-[#0455a7] px-4 py-5 rounded-2xl text-sm text-[#071116] hover:bg-cyan-600">
                 Browse components <ChevronRight data-icon="inline-end" />
               </Button>
               <button className="flex items-center gap-2 rounded-md px-2 py-2 text-sm text-slate-400 hover:text-slate-100">
