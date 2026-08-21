@@ -77,7 +77,7 @@ export function LibraryDashboard() {
       }
     >
       <header className="sticky top-0 z-20 border-b border-slate-800/80 bg-[#080b10]/90 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-[1500px] items-center gap-6 px-5 lg:px-8">
+        <div className="mx-auto flex h-16 max-w-375 items-center gap-6 px-5 lg:px-8">
           <button
             onClick={() => setMobileNav(!mobileNav)}
             className="rounded-md p-2 text-slate-400 hover:bg-slate-800 lg:hidden"
