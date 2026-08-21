@@ -41,6 +41,12 @@ const accentClass = {
   green: "text-emerald-300 border-emerald-400/30 bg-emerald-400/10",
 };
 
+const collectionActivePill = {
+  library: "border-cyan-300/60 bg-cyan-300/15 text-cyan-300 shadow-[0_0_12px_rgba(103,232,249,0.2)]",
+  motion: "border-fuchsia-300/60 bg-fuchsia-300/15 text-fuchsia-300 shadow-[0_0_12px_rgba(240,171,252,0.2)]",
+  fintech: "border-emerald-300/60 bg-emerald-300/15 text-emerald-300 shadow-[0_0_12px_rgba(110,231,183,0.2)]",
+};
+
 export function LibraryDashboard() {
   const [activeCollection, setActiveCollection] =
     useState<CollectionId>("library");
@@ -50,6 +56,26 @@ export function LibraryDashboard() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [copied, setCopied] = useState(false);
   const { dark, toggle } = useThemeStore();
+
+  const handleSelectCategory = (cat: string) => {
+    if (cat === "All components") {
+      setActiveCategory("All components");
+      return;
+    }
+
+    if (activeCategory === cat) {
+      setActiveCategory("All components");
+      return;
+    }
+
+    // If the category belongs to a different collection, switch to that collection automatically
+    const targetComp = components.find((c) => c.category === cat);
+    if (targetComp && targetComp.collection !== activeCollection) {
+      setActiveCollection(targetComp.collection);
+    }
+
+    setActiveCategory(cat);
+  };
 
   const visible = useMemo(
     () =>
@@ -221,19 +247,47 @@ export function LibraryDashboard() {
                   Browse by type
                 </p>
                 <div className="flex flex-col gap-1">
-                  {["All components", ...categories].map((category) => (
-                    <button
-                      key={category}
-                      onClick={() => setActiveCategory(category)}
-                      className={`rounded-md px-3 py-1.5 text-left text-xs transition ${
-                        activeCategory === category
-                          ? "text-cyan-300 font-medium"
-                          : "text-slate-500 hover:text-slate-200"
-                      }`}
-                    >
-                      {category}
-                    </button>
-                  ))}
+                  <button
+                    onClick={() => handleSelectCategory("All components")}
+                    className={`rounded-md px-3 py-1.5 text-left text-xs transition ${
+                      activeCategory === "All components"
+                        ? "text-cyan-300 font-medium bg-slate-800/60"
+                        : "text-slate-500 hover:text-slate-200 hover:bg-slate-900/50"
+                    }`}
+                  >
+                    All components
+                  </button>
+                  {categories
+                    .filter((category) =>
+                      components.some(
+                        (item) =>
+                          item.collection === activeCollection &&
+                          item.category === category
+                      )
+                    )
+                    .map((category) => {
+                      const count = components.filter(
+                        (item) =>
+                          item.collection === activeCollection &&
+                          item.category === category
+                      ).length;
+                      return (
+                        <button
+                          key={category}
+                          onClick={() => handleSelectCategory(category)}
+                          className={`flex items-center justify-between rounded-md px-3 py-1.5 text-left text-xs transition ${
+                            activeCategory === category
+                              ? "text-cyan-300 font-medium bg-slate-800/60"
+                              : "text-slate-500 hover:text-slate-200 hover:bg-slate-900/50"
+                          }`}
+                        >
+                          <span>{category}</span>
+                          <span className="font-mono text-[10px] text-slate-600">
+                            {count}
+                          </span>
+                        </button>
+                      );
+                    })}
                 </div>
               </div>
             )}
@@ -245,20 +299,22 @@ export function LibraryDashboard() {
                 <p className="text-xs leading-relaxed text-slate-500">
                   Built in public. Copy, remix, and make it yours.
                 </p>
-                <Link
-                  href="/docs"
-                  className="mt-4 flex items-center gap-1 text-xs text-slate-300 hover:text-cyan-300 transition"
-                >
-                  View philosophy & docs <ArrowUpRight size={12} />
-                </Link>
+                <div className="mt-4 flex flex-col gap-2">
+                  <Link
+                    href="/docs"
+                    className="flex items-center gap-1 text-xs text-slate-300 hover:text-cyan-300 transition"
+                  >
+                    View philosophy & docs <ArrowUpRight size={12} />
+                  </Link>
+                  <button
+                    onClick={() => window.open("https://github.com/0xD5L/component-library-site", "_blank")}
+                    className="flex items-center gap-1 text-xs text-slate-400 hover:text-cyan-300 transition"
+                  >
+                    View on GitHub <ArrowUpRight size={12} />
+                  </button>
+                </div>
               </div>
-              <p className="text-xs leading-relaxed text-slate-500">
-                Built in public. Copy, remix, and make it yours.
-              </p>
-              <button onClick={() => window.open("https://github.com/0xD5L/component-library-site", "_blank")} className="mt-4 flex items-center gap-1 text-xs text-slate-300 hover:text-cyan-300">
-                View on GitHub <ArrowUpRight size={12} />
-              </button>
-            </div>
+            )}
           </div>
         </aside>
 
@@ -306,10 +362,14 @@ export function LibraryDashboard() {
           </div>
           <div className="mb-8 flex gap-2 overflow-x-auto pb-1">
             <button
-              onClick={() => setActiveCategory("All components")}
-              className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${activeCategory === "All components" ? "border-cyan-300/50 bg-cyan-300/10 text-cyan-300" : "border-slate-800 text-slate-500 hover:text-slate-200"}`}
+              onClick={() => handleSelectCategory("All components")}
+              className={`whitespace-nowrap rounded-full border px-3.5 py-1.5 text-xs transition-all ${
+                activeCategory === "All components"
+                  ? collectionActivePill[activeCollection]
+                  : "border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200 bg-slate-900/40"
+              }`}
             >
-              All components
+              All components ({components.filter((c) => c.collection === activeCollection).length})
             </button>
             {categories
               .filter((c) =>
@@ -318,15 +378,29 @@ export function LibraryDashboard() {
                     item.collection === activeCollection && item.category === c,
                 ),
               )
-              .map((category) => (
-                <button
-                  key={category}
-                  onClick={() => setActiveCategory(category)}
-                  className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${activeCategory === category ? "border-cyan-300/50 bg-cyan-300/10 text-cyan-300" : "border-slate-800 text-slate-500 hover:text-slate-200"}`}
-                >
-                  {category}
-                </button>
-              ))}
+              .map((category) => {
+                const count = components.filter(
+                  (item) =>
+                    item.collection === activeCollection &&
+                    item.category === category
+                ).length;
+                return (
+                  <button
+                    key={category}
+                    onClick={() => handleSelectCategory(category)}
+                    className={`whitespace-nowrap rounded-full border px-3.5 py-1.5 text-xs transition-all ${
+                      activeCategory === category
+                        ? collectionActivePill[activeCollection]
+                        : "border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200 bg-slate-900/40"
+                    }`}
+                  >
+                    {category}{" "}
+                    <span className="font-mono text-[10px] opacity-70">
+                      ({count})
+                    </span>
+                  </button>
+                );
+              })}
           </div>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {visible.map((item, index) => (
