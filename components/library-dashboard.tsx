@@ -127,7 +127,7 @@ export function LibraryDashboard() {
 
       <div id="top" className="mx-auto flex max-w-[1500px]">
         <aside
-          className={`${mobileNav ? "absolute inset-x-0 top-16 z-10 block bg-[#080b10]" : "hidden"} w-64 shrink-0 border-r border-slate-800/80 lg:sticky lg:top-16 lg:block lg:h-[calc(100vh-4rem)]`}
+          className={`${mobileNav ? "absolute inset-x-0 top-16 z-10 block bg-[#080b10]" : "hidden"} w-64 shrink-0 border-r border-slate-800/80 lg:sticky lg:top-16 lg:block lg:h-[calc(100vh-4rem)] lg:overflow-y-auto`}
         >
           <div className="flex h-full flex-col px-4 py-7">
             <div className="mb-7 px-3">

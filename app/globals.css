@@ -156,8 +156,27 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    scrollbar-color: #293a56 transparent;
+    scrollbar-width: thin;
   }
   body {
     @apply bg-background text-foreground;
+  }
+  /* WebKit fallback (Chrome, Safari, Edge) */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #293a56;
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #e9b4d2;
   }
 }
