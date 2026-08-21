@@ -86,11 +86,9 @@ export function LibraryDashboard() {
             {mobileNav ? <X size={18} /> : <Menu size={18} />}
           </button>
           <a href="#top" className="flex items-center gap-3">
-            <span className="grid size-8 place-items-center rounded-lg bg-cyan-300 text-[#061016] shadow-[0_0_24px_rgba(103,232,249,.25)]">
-              <Box size={17} strokeWidth={2.5} />
-            </span>
-            <span className="font-mono text-sm font-bold tracking-tight">
-              /adeola/ui
+            <span className="flex items-center gap-2 text-lg font-semibold">
+              <img src="/kinetix-logo.png" alt="Kinetix" className="size-6" />
+              Kinetix
             </span>
           </a>
           <span className="hidden h-5 w-px bg-slate-700 sm:block" />
