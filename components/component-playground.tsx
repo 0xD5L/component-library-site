@@ -655,10 +655,10 @@ export function ComponentPlayground({ slug }: { slug: string }) {
 
                 {comp.slug === "marquee" && (
                   <div className="w-full overflow-hidden space-y-4">
-                    <div className="relative overflow-hidden py-4 [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]">
+                    <div className="relative overflow-hidden py-4 mask-[linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]">
                       <div
                         className={`flex gap-6 whitespace-nowrap animate-marquee ${
-                          marqueePause ? "hover:[animation-play-state:paused]" : ""
+                          marqueePause ? "hover:paused" : ""
                         }`}
                         style={{
                           animationDirection: marqueeReverse ? "reverse" : "normal",

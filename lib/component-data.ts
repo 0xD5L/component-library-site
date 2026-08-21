@@ -797,7 +797,7 @@ export function Marquee({
   return (
     <div
       className={cn(
-        "group relative flex overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_15%,white_85%,transparent)]",
+        "group relative flex overflow-hidden mask-[linear-gradient(to_right,transparent,white_15%,white_85%,transparent)]",
         className
       )}
       {...props}
@@ -809,7 +809,7 @@ export function Marquee({
         }}
         className={cn(
           "flex shrink-0 animate-marquee items-center gap-6",
-          pauseOnHover && "group-hover:[animation-play-state:paused]"
+          pauseOnHover && "group-hover:paused"
         )}
       >
         {children}
@@ -823,7 +823,7 @@ export function Marquee({
         }}
         className={cn(
           "flex shrink-0 animate-marquee items-center gap-6",
-          pauseOnHover && "group-hover:[animation-play-state:paused]"
+          pauseOnHover && "group-hover:paused"
         )}
       >
         {children}
@@ -1187,7 +1187,7 @@ export function TransactionStatus({
         className
       )}
     >
-      <div className={cn("absolute inset-x-0 top-0 h-32 bg-gradient-to-b opacity-50", config.accent)} />
+      <div className={cn("absolute inset-x-0 top-0 h-32 bg-linear-to-b opacity-50", config.accent)} />
       
       <div className="relative flex flex-col items-center text-center">
         <div className="grid size-14 place-items-center rounded-2xl border border-slate-800 bg-slate-900 shadow-inner">

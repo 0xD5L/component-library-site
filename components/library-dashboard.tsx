@@ -124,7 +124,7 @@ export function LibraryDashboard() {
         </div>
       </header>
 
-      <div id="top" className="mx-auto flex max-w-[1500px]">
+      <div id="top" className="mx-auto flex max-w-375">
         <aside
           className={`${mobileNav ? "absolute inset-x-0 top-16 z-10 block bg-[#080b10]" : "hidden"} w-64 shrink-0 border-r border-slate-800/80 lg:sticky lg:top-16 lg:block lg:h-[calc(100vh-4rem)] lg:overflow-y-auto`}
         >
@@ -373,7 +373,7 @@ function Preview({
     );
   if (name === "Input")
     return (
-      <div className="w-full max-w-[210px] rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-xs text-slate-600">
+      <div className="w-full max-w-52.5 rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-xs text-slate-600">
         you@example.com
       </div>
     );
@@ -392,7 +392,7 @@ function Preview({
     );
   if (name === "Naira Input")
     return (
-      <div className="flex w-full max-w-[200px] items-center gap-2 rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-xs">
+      <div className="flex w-full max-w-50 items-center gap-2 rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-xs">
         <span className={color.split(" ")[0]}>₦</span>
         <span className="text-slate-300">125,000.00</span>
       </div>
@@ -408,7 +408,7 @@ function Preview({
     );
   if (name === "Skeleton Loader")
     return (
-      <div className="flex w-full max-w-[200px] flex-col gap-2">
+      <div className="flex w-full max-w-50 flex-col gap-2">
         <span className="h-3 w-2/3 rounded bg-slate-700" />
         <span className="h-3 w-full rounded bg-slate-800" />
         <span className="h-3 w-1/2 rounded bg-slate-800" />
