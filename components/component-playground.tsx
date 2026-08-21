@@ -289,7 +289,7 @@ export function ComponentPlayground({ slug }: { slug: string }) {
 
               {/* Playground Stage Area */}
               <div
-                className={`relative flex min-h-[440px] flex-1 items-center justify-center rounded-b-2xl border border-t-0 border-slate-800 p-8 transition-colors ${
+                className={`relative flex min-h-110 flex-1 items-center justify-center rounded-b-2xl border border-t-0 border-slate-800 p-8 transition-colors ${
                   previewDark
                     ? "bg-[#090d14] text-slate-100"
                     : "bg-slate-100 text-slate-900"
@@ -551,7 +551,7 @@ export function ComponentPlayground({ slug }: { slug: string }) {
                     ) : (
                       <div className="space-y-4 rounded-2xl border border-slate-800 bg-slate-900/60 p-6 animate-in fade-in duration-300">
                         <div className="flex items-center gap-4">
-                          <div className="grid size-12 place-items-center rounded-full bg-gradient-to-tr from-cyan-400 to-blue-600 font-bold text-slate-950">
+                          <div className="grid size-12 place-items-center rounded-full bg-linear-to-tr from-cyan-400 to-blue-600 font-bold text-slate-950">
                             AJ
                           </div>
                           <div>
@@ -627,10 +627,10 @@ export function ComponentPlayground({ slug }: { slug: string }) {
                     className="w-full max-w-sm"
                   >
                     <div
-                      className="group relative overflow-hidden rounded-2xl border border-fuchsia-500/30 bg-gradient-to-br from-slate-900 via-[#130d22] to-slate-950 p-6 shadow-2xl transition hover:shadow-fuchsia-500/10"
+                      className="group relative overflow-hidden rounded-2xl border border-fuchsia-500/30 bg-linear-to-br from-slate-900 via-[#130d22] to-slate-950 p-6 shadow-2xl transition hover:shadow-fuchsia-500/10"
                     >
                       {tiltGlare && (
-                        <div className="pointer-events-none absolute -inset-full opacity-0 transition group-hover:opacity-30 group-hover:bg-gradient-to-tr group-hover:from-transparent group-hover:via-fuchsia-300 group-hover:to-transparent" />
+                        <div className="pointer-events-none absolute -inset-full opacity-0 transition group-hover:opacity-30 group-hover:bg-linear-to-tr group-hover:from-transparent group-hover:via-fuchsia-300 group-hover:to-transparent" />
                       )}
                       <div className="flex items-center justify-between">
                         <CreditCard className="size-6 text-fuchsia-400" />
